@@ -1168,7 +1168,12 @@ Status DBImpl::Open(const DBOptions& db_options, const std::string& dbname,
         std::max(max_write_buffer_size, cf.options.write_buffer_size);
   }
 
-  DBImpl* impl = new DBImpl(db_options, dbname, seq_per_batch, batch_per_txn);
+  DBImpl* impl = nullptr;
+  if (db_options.splaying) {
+    impl = new DBImplWithSplaying(db_options, dbname, seq_per_batch, batch_per_txn);
+  } else {
+    impl = new DBImpl(db_options, dbname, seq_per_batch, batch_per_txn);
+  }
   s = impl->env_->CreateDirIfMissing(impl->immutable_db_options_.wal_dir);
   if (s.ok()) {
     std::vector<std::string> paths;

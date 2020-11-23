@@ -1649,6 +1649,10 @@ std::unordered_map<std::string, OptionTypeInfo>
          {offsetof(struct DBOptions, avoid_unnecessary_blocking_io),
           OptionType::kBoolean, OptionVerificationType::kNormal, false,
           offsetof(struct ImmutableDBOptions, avoid_unnecessary_blocking_io)}},
+        {"splaying",
+         {offsetof(struct DBOptions, splaying),
+          OptionType::kBoolean, OptionVerificationType::kNormal, true,
+          offsetof(struct ImmutableDBOptions, splaying)}},
 };
 
 std::unordered_map<std::string, BlockBasedTableOptions::IndexType>

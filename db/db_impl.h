@@ -1789,4 +1789,22 @@ static void ClipToRange(T* ptr, V minvalue, V maxvalue) {
   if (static_cast<V>(*ptr) < minvalue) *ptr = minvalue;
 }
 
+class DBImplWithSplaying : public DBImpl {
+ public:
+  DBImplWithSplaying(const DBOptions& options, const std::string& dbname,
+         const bool seq_per_batch = false, const bool batch_per_txn = true)
+    : DBImpl(options, dbname, seq_per_batch, batch_per_txn) {}
+
+  using DB::Get;
+  virtual Status Get(const ReadOptions& options,
+                     ColumnFamilyHandle* column_family, const Slice& key,
+                     PinnableSlice* value) override {
+    Status s = DBImpl::Get(options, column_family, key, value);
+    if (s.ok()) {
+      return DBImpl::Put(WriteOptions(), column_family, key, value->data());
+    }
+    return s;
+  }
+};
+
 }  // namespace rocksdb

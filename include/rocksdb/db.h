@@ -390,6 +390,7 @@ class DB {
     }  // else value is already assigned
     return s;
   }
+
   virtual Status Get(const ReadOptions& options,
                      ColumnFamilyHandle* column_family, const Slice& key,
                      PinnableSlice* value) = 0;

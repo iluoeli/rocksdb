@@ -1803,6 +1803,7 @@ class DBImplWithSplaying : public DBImpl {
                      PinnableSlice* value) override {
     Status s = DBImpl::Get(options, column_family, key, value);
     if (s.ok()) {
+      printf("%d, %d\n", value.size(), strlen(value->data()));
       return DBImpl::Put(WriteOptions(), column_family, key, value->data());
     }
     return s;

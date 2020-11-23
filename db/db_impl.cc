@@ -3916,4 +3916,15 @@ Status DBImpl::ReserveFileNumbersBeforeIngestion(
 }
 #endif  // ROCKSDB_LITE
 
+Status DBImplWithSplaying::Get(const ReadOptions& options,
+    ColumnFamilyHandle* column_family, const Slice& key,
+    PinnableSlice* value) {
+  Status s = DBImpl::Get(options, column_family, key, value);
+  if (s.ok()) {
+    printf("%lu, %lu\n", value->size(), strlen(value->data()));
+    return DBImpl::Put(WriteOptions(), column_family, key, value->data());
+  }
+    return s;
+}
+
 }  // namespace rocksdb

@@ -590,6 +590,9 @@ Status DBImpl::CloseImpl() { return CloseHelper(); }
 DBImpl::~DBImpl() {
   if (!closed_) {
     closed_ = true;
+    // always dump stats before closing
+    ROCKS_LOG_INFO(immutable_db_options_.info_log, "Dumping stats when closing DB\n");
+    DumpStats();
     CloseHelper();
   }
 }

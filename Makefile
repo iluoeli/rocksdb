@@ -59,6 +59,10 @@ ifeq ($(MAKECMDGOALS),shared_lib)
 	DEBUG_LEVEL=0
 endif
 
+ifeq ($(MAKECMDGOALS),shared_lib_gdb)
+	DEBUG_LEVEL=2
+endif
+
 ifeq ($(MAKECMDGOALS),install-shared)
 	DEBUG_LEVEL=0
 endif
@@ -705,6 +709,8 @@ all_but_some_tests: $(LIBRARY) $(BENCHMARKS) tools tools_lib test_libs $(SUBSET)
 static_lib: $(LIBRARY)
 
 shared_lib: $(SHARED)
+
+shared_lib_gdb: $(SHARED)
 
 tools: $(TOOLS)
 

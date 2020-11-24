@@ -1792,10 +1792,7 @@ static void ClipToRange(T* ptr, V minvalue, V maxvalue) {
 class DBImplWithSplaying : public DBImpl {
  public:
   DBImplWithSplaying(const DBOptions& options, const std::string& dbname,
-         const bool seq_per_batch = false, const bool batch_per_txn = true)
-    : DBImpl(options, dbname, seq_per_batch, batch_per_txn) {
-    printf("Using DBImplWithSplaying\n");
-  }
+         const bool seq_per_batch = false, const bool batch_per_txn = true);
 
   using DB::Get;
   virtual Status Get(const ReadOptions& options,

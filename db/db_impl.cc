@@ -3916,13 +3916,19 @@ Status DBImpl::ReserveFileNumbersBeforeIngestion(
 }
 #endif  // ROCKSDB_LITE
 
+DBImplWithSplaying::DBImplWithSplaying(const DBOptions& options, const std::string& dbname,
+    const bool seq_per_batch, const bool batch_per_txn)
+  : DBImpl(options, dbname, seq_per_batch, batch_per_txn) {
+  ROCKS_LOG_HEADER(immutable_db_options().info_log, "Using DBImplWithSplaying\n");
+}
+
 Status DBImplWithSplaying::Get(const ReadOptions& options,
     ColumnFamilyHandle* column_family, const Slice& key,
     PinnableSlice* value) {
   Status s = DBImpl::Get(options, column_family, key, value);
   if (s.ok()) {
-    printf("%lu, %lu\n", value->size(), strlen(value->data()));
-    return DBImpl::Put(WriteOptions(), column_family, key, value->data());
+    // printf("%lu, %lu\n", value->size(), strlen(value->data()));
+    return DBImpl::Put(WriteOptions(), column_family, key, std::string(value->data(), value->size()));
   }
     return s;
 }

@@ -74,3 +74,11 @@ tp2/
 fbcode/
 fbcode
 buckifier/*.pyc
+
+bzip*
+lz4*
+snappy*
+zlib*
+zstd*
+.vscode
+app
